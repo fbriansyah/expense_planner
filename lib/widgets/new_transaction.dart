@@ -5,39 +5,44 @@ class NewTransaction extends StatelessWidget {
   final TextEditingController amountController = TextEditingController();
   final Function onAdd;
 
-  NewTransaction(this.onAdd); 
+  NewTransaction(this.onAdd);
+
+  void addTransaction() {
+    double txAmount = double.parse(amountController.text);
+    String txTitle = titleController.text;
+
+    if(txTitle.isEmpty || txAmount <= 0) return;
+
+    this.onAdd(txTitle, txAmount);
+  }
 
   @override
   Widget build(BuildContext context) {
     return Card(
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: <Widget>[
-                    TextField(
-                      decoration: InputDecoration(labelText: 'Title'),
-                      controller: titleController,
-                      // onChanged: (val) => titleInput = val,
-                    ),
-                    TextField(
-                      decoration: InputDecoration(labelText: 'Amount'),
-                      controller: amountController,
-                      // onChanged: (val) => amountInput = val,
-                    ),
-                    FlatButton(
-                      child: Text('Add Transaction'),
-                      onPressed: () { 
-                        double txAmount = double.parse(amountController.text);
-                        String txTitle = titleController.text;
-
-                        this.onAdd(txTitle, txAmount);
-                      },
-                      textColor: Colors.purple,
-                    )
-                  ],
-                ),
-              ),
-            );
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: <Widget>[
+            TextField(
+              decoration: InputDecoration(labelText: 'Title'),
+              controller: titleController,
+              onSubmitted: (_) => addTransaction(),
+            ),
+            TextField(
+              decoration: InputDecoration(labelText: 'Amount'),
+              controller: amountController,
+              onSubmitted: (_) => addTransaction(),
+              keyboardType: TextInputType.numberWithOptions(decimal: true),
+            ),
+            FlatButton(
+              child: Text('Add Transaction'),
+              onPressed: addTransaction,
+              textColor: Colors.purple,
+            )
+          ],
+        ),
+      ),
+    );
   }
 }
