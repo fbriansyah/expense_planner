@@ -23,6 +23,9 @@ class MyApp extends StatelessWidget {
                 fontSize: 16,
                 fontWeight: FontWeight.bold,
               ),
+              button: TextStyle(
+                color: Colors.white,
+              ),
             ),
         appBarTheme: AppBarTheme(
           textTheme: ThemeData.light().textTheme.copyWith(
@@ -45,20 +48,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  final List<Transaction> _userTransactions = [
-    // Transaction(
-    //   id: 'tx01',
-    //   title: 'New PC',
-    //   amount: 123.9,
-    //   date: DateTime.now(),
-    // ),
-    // Transaction(
-    //   id: 'tx02',
-    //   title: 'Weekly grocery',
-    //   amount: 12.65,
-    //   date: DateTime.now(),
-    // ),
-  ];
+  final List<Transaction> _userTransactions = [];
 
   List<Transaction> get _recentTransactions {
     return _userTransactions.where((tx) {
@@ -70,11 +60,11 @@ class _HomePageState extends State<HomePage> {
     }).toList();
   }
 
-  void _addTransaction(String txTitle, double txAmount) {
+  void _addTransaction(String txTitle, double txAmount, DateTime txDate) {
     final newTx = Transaction(
       title: txTitle,
       amount: txAmount,
-      date: DateTime.now(),
+      date: txDate,
       id: DateTime.now().toString(),
     );
 
