@@ -16,6 +16,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.deepPurple,
         accentColor: Colors.green,
+//        errorColor: Colors.red,
         fontFamily: 'QuickSand',
         textTheme: ThemeData.light().textTheme.copyWith(
               headline6: TextStyle(
@@ -73,6 +74,12 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
+  void _deleteTransaction(String id) {
+    setState(() {
+      _userTransactions.removeWhere((element) => element.id == id);
+    });
+  }
+
   void startAddNewTransaction(BuildContext ctx) {
     showModalBottomSheet(
       context: ctx,
@@ -103,7 +110,7 @@ class _HomePageState extends State<HomePage> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
             Chart(_recentTransactions),
-            TransactionList(_userTransactions),
+            TransactionList(_userTransactions, _deleteTransaction),
           ],
         ),
       ),
