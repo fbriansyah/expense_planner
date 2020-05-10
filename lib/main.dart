@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+//import 'package:flutter/services.dart';
 
 import './widgets/transaction_list.dart';
 import './widgets/new_transaction.dart';
@@ -6,7 +7,15 @@ import './widgets/chart.dart';
 
 import './models/transaction.dart';
 
-void main() => runApp(MyApp());
+void main() {
+  //// Force Potrait mode
+//  WidgetsFlutterBinding.ensureInitialized();
+//  SystemChrome.setPreferredOrientations([
+//    DeviceOrientation.portraitUp,
+//    DeviceOrientation.portraitDown,
+//  ]);
+  runApp(MyApp());
+}
 
 class MyApp extends StatelessWidget {
   @override
@@ -95,22 +104,39 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    final appBar = AppBar(
+      title: Text('Expense Planner'),
+      actions: <Widget>[
+        IconButton(
+          icon: Icon(Icons.add),
+          onPressed: () => startAddNewTransaction(context),
+        )
+      ],
+    );
+
+    var appBarHeight = appBar.preferredSize.height;
+    var statusBarHeight = MediaQuery.of(context).padding.top;
+
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Expense Planner'),
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(Icons.add),
-            onPressed: () => startAddNewTransaction(context),
-          )
-        ],
-      ),
+      appBar: appBar,
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
-            Chart(_recentTransactions),
-            TransactionList(_userTransactions, _deleteTransaction),
+            Container(
+              child: Chart(_recentTransactions),
+              height: (MediaQuery.of(context).size.height -
+                      appBarHeight -
+                      statusBarHeight) *
+                  0.3,
+            ),
+            Container(
+              child: TransactionList(_userTransactions, _deleteTransaction),
+              height: (MediaQuery.of(context).size.height -
+                      appBarHeight -
+                      statusBarHeight) *
+                  0.7,
+            ),
           ],
         ),
       ),
